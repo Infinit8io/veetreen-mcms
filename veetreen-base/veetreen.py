@@ -15,7 +15,7 @@ template = "bootstrap4"
 
 @app.route('/')
 @app.route('/<pagename>')
-def page(pagename):
+def page(pagename=None):
 
     # Get all the pages
     spreadsheet = gc.open('veetreen')
@@ -29,9 +29,6 @@ def page(pagename):
     all_pages = conf.row_values(5)[1:]
     pages = [page for page in all_pages if page]
 
-    # Debug swag
-    print("the page is " + pagename)
-    print(pages)
 
     # Checking page validity
     if not page_is_valid(pagename, pages):
