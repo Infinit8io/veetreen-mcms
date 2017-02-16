@@ -1,0 +1,14 @@
+{% extends "bootstrap4/base.html" %}
+
+
+{% block title %}Homepage{% endblock %}
+
+
+{% block content %}
+
+  <h2>List of pages</h2>
+  {% for p in pages %}
+      <li>{{ p }}</li>
+  {% endfor %}
+
+{% endblock %}
