@@ -1,25 +1,24 @@
-from flask import Flask, render_template, request, redirect
-from .models.Veetreen  import Veetreen
+from flask import Flask, render_template, request, redirect,g
+from werkzeug.local import LocalProxy
+from models.Veetreen  import Veetreen
 import pika
 import json
 
 app = Flask(__name__)
-
-pika_connection = None
-channel = None
 SERVER = "localhost"
 
 
+def get_channel():
 
-def load_pika():
-    global channel
-    global pika_connection
-    pika_connection = pika.BlockingConnection(pika.ConnectionParameters(host=SERVER))
-    channel = pika_connection.channel()
-    channel.queue_declare(queue='create_veetreen')
-    channel.queue_declare(queue='refresh')
+    channel = getattr(g, '_channel', None)
 
-load_pika()
+    if not channel:
+        pika_connection = pika.BlockingConnection(pika.ConnectionParameters(host=SERVER))
+        channel = pika_connection.channel()
+        channel.queue_declare(queue='create_veetreen')
+        channel.queue_declare(queue='refresh')
+
+    return channel
 
 @app.route("/board")
 def board():
@@ -38,6 +37,8 @@ def create():
         alias=alias,
         domain=domain
     ).create()
+
+    channel = LocalProxy(get_channel)
 
     channel.basic_publish(
         exchange='',
