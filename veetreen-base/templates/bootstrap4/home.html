@@ -6,9 +6,24 @@
 
 {% block content %}
 
-  <h2>List of pages</h2>
-  {% for p in pages %}
-      <li>{{ p }}</li>
-  {% endfor %}
+<div class="fullpage" style="background-image: url('{{ context.background_image }}');">
+  <div class="dark-layer">
+
+    <div class="container" style="padding-top: 10%;">
+      <div class="row">
+
+        <div class="col-md-12 col-xs-12 text-center">
+          <h1 class="display-1">{{ context.main_title }}</h1>
+          <p class="lead">{{ context.subline_title }}</p>
+          <br/>
+          <a class="btn btn-lg btn-danger" href="{{ context.action_1_url }}">{{ context.action_1_text }}</a>
+          <a class="btn btn-lg btn-danger" href="{{ context.action_2_url }}">{{ context.action_2_text }}</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 
 {% endblock %}

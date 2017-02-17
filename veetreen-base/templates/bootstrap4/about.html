@@ -1,0 +1,53 @@
+{% extends "bootstrap4/base.html" %}
+
+
+{% block title %}Homepage{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+
+  <div class="container">
+    <br/>
+    <h1 class="display-4">{{ context.about_title }}</h1>
+    <p class="lead">
+      {{ context.about_subline }}
+    </p>
+
+  </div>
+</div>
+
+
+<div class="row">
+
+  <div class="container">
+
+    <div class="col-md-8">
+      {{ context.about_txt_1 }}
+    </div>
+
+    <div class="col-md-4">
+      <img class="img-fluid" src="{{ context.profile_picture }}">
+    </div>
+
+  </div>
+
+</div>
+
+<div class="row">
+
+<div class="container">
+
+<div class="col-md-12">
+
+<p class="lead">{{ context.about_txt_2 }}</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+{% endblock %}

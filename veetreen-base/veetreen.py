@@ -8,36 +8,69 @@ from veetreen_utils import page_is_valid
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
+from configuration import Configuration
 
 app = Flask(__name__)
 
 template = "bootstrap4"
 
+home_context = {
+    'main_title':       'B3',
+    'subline_title':    'B4',
+    'action_1_text':    'B6',
+    'action_1_url':     'C6',
+    'action_2_text':    'B7',
+    'action_2_url':     'C7',
+    'background_image': 'B9',
+}
+
+about_context = {
+    'about_title':      'B4',
+    'about_subline':    'B5',
+    'about_txt_1':      'B7',
+    'about_txt_2':      'B8',
+    'about_txt_3':      'B9',
+    'profile_picture':  'B11',
+}
+
+blog_context = {
+    'blog_first_post':  'A3',
+}
+
 @app.route('/')
 @app.route('/<pagename>')
 def page(pagename=None):
 
-    # Get all the pages
-    spreadsheet = gc.open('veetreen')
+    home_sheet = spreadsheet.worksheet("Home")
 
-    # Get the config
-    conf = spreadsheet.worksheet("Configuration")
+    context = {} # Preparing empty context
 
-    # Config infos
-    sitename = conf.acell('B3').value
-    template = conf.acell('B4').value
-    all_pages = conf.row_values(5)[1:]
-    pages = [page for page in all_pages if page]
-
+    for key, cell in home_context.items():
+        context[key] = home_sheet.acell(cell).value # Fill the context with cell content
 
     # Checking page validity
-    if not page_is_valid(pagename, pages):
+    if not page_is_valid(pagename, conf.pages):
         page = "home"
 
-    worksheets_list = spreadsheet.worksheets()
-    return render_template(template + '/home.html', pages=pages)
+    return render_template(conf.template + '/home.html', pages=conf.pages, context=context)
+
+@app.route('/about')
+def about():
+
+    about_sheet = spreadsheet.worksheet("About")
+
+    context = {}
+
+    for key, cell in about_context.items():
+        context[key] = about_sheet.acell(cell).value
+
+    return render_template(conf.template + '/about.html', pages=conf.pages, context=context)
+
 
 
 scope = ['https://spreadsheets.google.com/feeds']
 credentials = ServiceAccountCredentials.from_json_keyfile_name('cred.json', scope)
 gc = gspread.authorize(credentials)
+# Get all the pages ad create the configuration
+spreadsheet = gc.open('veetreen')
+conf = Configuration(spreadsheet.worksheet("Configuration"))
