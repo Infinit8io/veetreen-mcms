@@ -66,6 +66,32 @@ def about():
 
     return render_template(conf.template + '/about.html', pages=conf.pages, context=context)
 
+@app.route('/blog')
+def blog():
+
+    blog_sheet = spreadsheet.worksheet("Blog")
+
+    context = {}
+    context["posts"] = []
+
+
+    all_blog_sheet = blog_sheet.get_all_records(head=2)
+
+    for post in all_blog_sheet:
+        if post["Title"] != "" and post["Content"] != "" and post["Published"] != "No":
+            context["posts"].append(post)
+
+    return render_template(conf.template + '/blog.html', pages=conf.pages, posts=context["posts"])
+
+@app.route('/blog/<id>-<title>')
+def blog_post(id, title):
+
+    blog_sheet = spreadsheet.worksheet("Blog")
+
+    blog_post = blog_sheet.row_values(int(id) + 2)
+    print(blog_post)
+
+    return render_template(conf.template + '/post.html', pages=conf.pages, post=blog_post)
 
 
 scope = ['https://spreadsheets.google.com/feeds']

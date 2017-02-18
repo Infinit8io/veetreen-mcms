@@ -1,0 +1,29 @@
+{% extends "bootstrap4/base.html" %}
+
+
+{% block title %}Homepage{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+
+  <div class="col-md-12">
+
+    <img src="{{ post[4] }}" class="img-fluid" style="max-width:600px;">
+
+    <h1>{{ post[1] }}</h1>
+    <p>{{ post[3] }}</p>
+
+    <br/>
+
+    <p>
+      {{ post[5] }}
+    </p>
+
+  </div>
+
+</div>
+
+
+{% endblock %}

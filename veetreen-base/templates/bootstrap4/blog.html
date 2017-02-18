@@ -1,0 +1,37 @@
+{% extends "bootstrap4/base.html" %}
+
+
+{% block title %}Homepage{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container">
+
+  <div class="col-md-12">
+    <div class="row">
+      {% for post in posts %}
+
+      <div class="col-md-6" style="margin-top:10px;">
+
+        <div class="card">
+          <img class="card-img-top img-fluid" src="{{ post["Featured image"] }}" alt="Card image cap">
+          <div class="card-block">
+            <h4 class="card-title"><a href="blog/{{ post["ID"]}}-{{ post["Title"]|lower }}">{{ post["Title"] }}</a></h4>
+            <h6 class="card-subtitle mb-2 text-muted">{{ post["Content"][0:150]}}...</h6>
+          </div>
+        </div>
+
+      </div>
+
+
+
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+
+{% endblock %}
