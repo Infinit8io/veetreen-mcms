@@ -1,3 +1,5 @@
 *.pyc
 *.tar
 veetreen-base/cred.json
+cred.json
+veetreens/default/conf.py

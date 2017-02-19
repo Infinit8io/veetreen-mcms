@@ -54,6 +54,7 @@ def dominique(ch=None, method=None, properties=None, body=None):
 def server_callback(environ, start_response):
     for key,value in environ.items():
         if key == "HTTP_HOST":
+            print("[INFO] URL Requested:", value)
             if value in veetreens.keys():
                 return veetreens[value](environ, start_response)
             else:

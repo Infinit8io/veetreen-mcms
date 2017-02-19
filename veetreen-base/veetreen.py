@@ -2,13 +2,13 @@ from flask import Flask
 from flask import render_template
 
 # Credentials google
-from veetreen_utils import get_configuration
-from veetreen_utils import page_is_valid
+from .veetreen_utils import get_configuration
+from .veetreen_utils import page_is_valid
 
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-from configuration import Configuration
+from .configuration import Configuration
 
 app = Flask(__name__)
 

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Veetren board</title>
+    <title>Veetreen</title>
 
     <script
     src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
@@ -20,6 +20,19 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='board_style.css') }}">
   </head>
   <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+                <div class="navbar-header">
+                      <a class="navbar-brand" href="/">Veetreen</a>
+                </div>
+                {% if context %}
+                    <ul class="nav navbar-nav navbar-right">
+                          <li><p class="navbar-text"><img src="{{ context.user_picture }}" style="border-radius: 50%; max-width: 20px; margin-right: 5px;"/> {{ context.user_name }}</p></li>
+                    </ul>
+                {% endif %}
+          </div>
+
+    </nav>
     <div class="container">
         {% block body %}{% endblock %}
     </div>

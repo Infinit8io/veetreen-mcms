@@ -1,0 +1,9 @@
+{# theend.html #}
+{% extends "base.html" %}
+{% block body %}
+    <div class="jumbotron">
+          <h1>Thank you, {{ context.user_name }}</h1>
+          <p>Your veetreen has been created at <a href="http://{{context.user_domain}}">http://{{context.user_domain}}</a></p>
+          <p>Keep in mind that this is still a beta. For now, only one veetreen is allowed per person.</p>
+    </div>
+{% endblock %}
