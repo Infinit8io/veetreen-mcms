@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block content %}
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col mt-3">
+      <h3>Hey, welcome {{ user.username }}!</h3>
+      <hr>
+      <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>This is your personal page.</strong> There are two important lists: events you created and event you attend to.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Event created by user -->
+  <div class="row">
+    <div class="col">
+      <h4 class="my-2 text-muted" >Events created by you</h4>
+      {% if admin_of %}
+      <ul class="list-group">
+        {% for event in admin_of %}
+        <li class="list-group-item justify-content-between"><strong><a href="{% url 'show-event' event.slug %}">{{ event.name }}</a></strong> <span class="text-muted">{{ event.date_time }}</span></li>
+        {% endfor %}
+        <br>
+        <a href="{% url 'create-event' %}" class="btn btn-outline-danger text-center">new event</a>
+      </ul>
+      {% else %}
+      <div class="container">
+        <div class="card text-center">
+          <div class="card-block">
+            <h5>Woops, it's empty</h5>
+            <p class="text-muted">Do not wait to organize your fist event!</p>
+            <a href="{% url 'create-event' %}" class="btn btn-outline-danger">Create my first event</a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="row mb-3">
+    <div class="col">
+      <h4 class="my-2 mt-4 text-muted">Next attending events</h4>
+      {% if goes_to %}
+      <ul class="list-group">
+        {% for event in goes_to %}
+        <li class="list-group-item justify-content-between"><strong><a href="{% url 'show-event' event.slug %}">{{ event.name }}</a></strong> <span class="text-muted">{{ event.date_time }}</span></li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div class="container">
+        <div class="card text-center">
+          <div class="card-block">
+            <h5>Woops, it's empty</h5>
+            <p class="text-muted">You can either create an event or wait a bit to be invited.</p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+
+</div>
+{% endblock %}
