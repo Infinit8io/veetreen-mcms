@@ -1,0 +1,40 @@
+input[type='range'] {
+  width: 190px;
+  height: 30px;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0px !important;
+  border: none;
+}
+input[type='range'],
+input[type='range']::-webkit-slider-runnable-track,
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+input[type='range']::-webkit-slider-runnable-track {
+  width: 200px;
+  height: 10px;
+  background: #AAA;
+}
+input[type='range']::-webkit-slider-thumb {
+  position: relative;
+  height: 30px;
+  width: 30px;
+  margin-top: -10px;
+  background: #d9534f;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+input[type='range']::-webkit-slider-thumb::before {
+  position: absolute;
+  content: '';
+  height: 10px; /* equal to height of runnable track */
+  left: -502px; /* this should be -2px - width */
+  top: 8px; /* don't change this */
+  width: 500px;
+  background: #777;
+}
+
+.contributions-details{
+  padding: 10px;
+}
