@@ -1,0 +1,43 @@
+version: '2'
+
+volumes:
+  mysql_data:
+
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_USER=django
+      - MYSQL_PASSWORD=django
+      - MYSQL_DATABASE=django
+      - MYSQL_RANDOM_ROOT_PASSWORD=True
+    volumes:
+      - mysql_data:/var/lib/mysql
+  redis:
+    image: redis:3.2-alpine
+
+  web:
+    restart: always
+    build: .
+    depends_on:
+      - mysql
+    links:
+      - mysql:mysql
+      - redis:redis
+    environment:
+      - DB_NAME=django
+      - DB_USER=django
+      - DB_PASS=django
+      - DB_SERVICE=mysql
+      - DB_PORT=3306
+    command: bash -c "cd /data/web/whatineed && python3 manage.py migrate && echo yes | python3 manage.py collectstatic && gunicorn whatineed.wsgi -w 2 -b :8000"
+
+  nginx:
+    restart: always
+    build: ./nginx/
+    ports:
+      - "82:80"
+    volumes_from:
+      - web
+    links:
+      - web:web

@@ -1,0 +1,25 @@
+{
+  "scripts": {
+    "production": "webpack -p",
+    "watch": "webpack --watch"
+  },
+  "dependencies": {
+    "babel-core": "^6.23.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-latest": "^6.24.1",
+    "bootstrap": "4.0.0-alpha.6",
+    "clipboard": "^1.6.1",
+    "css-loader": "^0.28.0",
+    "django-formset": "elo80ka/django-dynamic-formset#f57c8ca432ec5c3c028d1e76f9bf2f94e745ed3f",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.11.1",
+    "geocomplete": "^1.7.0",
+    "google-maps-api": "^2.0.1",
+    "jquery": "3.2.1",
+    "node-sass": "^4.5.2",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.16.1",
+    "webpack": "^2.4.0",
+    "webpack-bundle-tracker": "^0.2.0"
+  }
+}

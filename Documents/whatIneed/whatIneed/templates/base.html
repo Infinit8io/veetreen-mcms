@@ -1,0 +1,59 @@
+{% load render_bundle from webpack_loader %}
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+    <meta name=viewport content="width=device-width">
+    <title>{% block title %}IBring.it{% endblock %}</title>
+    {% render_bundle 'main' 'css' %}
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,800" rel="stylesheet">
+</head>
+<body>
+    <main id="content">
+
+      <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand" href="/"><strong><span class="badge badge-danger">IBring.it</span></strong><span class="text-muted ml-1 mr-3"><small>Alpha</small></span></a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+              {% if request.user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link"  href="{% url 'dashboard' %}">Dashboard</a></li>
+                {% endif %}
+
+
+
+            {% if not request.user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link"  href="/accounts/login">Login</a></li>
+                {% endif %}
+
+          {% if request.user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'create-event' %}">NEW</a></li>
+                {% endif %}
+
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+
+          {% if request.user.is_authenticated %}
+                <li class="nav-item"><a  class="nav-link"  href="/accounts/logout">logout</a></li>
+                {% endif %}
+
+
+          </ul>
+        </div>
+      </nav>
+
+
+
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="text-center bg-danger text-white text-capitalize">
+        <strong>2017 © What I Need.</strong>
+    </footer>
+    {% render_bundle 'main' 'js' %}
+</body>
+</html>

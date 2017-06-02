@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% load add_css %}
+
+
+{% block title %}Add some items{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+
+
+  <div class="row">
+
+    <div class="col-12">
+
+      <h2 class="form-title mt-2"><span class="badge badge-danger">Add</span> Items</h2>
+      <form method="post" class="form-inline">
+
+        {% csrf_token %}
+
+        {{formset.management_form }}
+
+        {% for form in formset.forms %}
+        <div class="with-formset mt-3">
+          <div class="form-group row">
+
+            <div class="col-4 pr-0">
+              {{ form.category|addclass:"form-control" }}
+            </div>
+            <div class="col-8">
+              {{ form.name|addclass:"form-control" }}
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-4 pr-0">
+              {{ form.qty|addclass:"form-control" }}
+            </div>
+            <div class="col-8">
+              {{ form.unit|addclass:"form-control" }}
+            </div>
+
+            <!-- Hidden event field -->
+            {{ form.id }}
+            {{ form.event }}
+          </div>
+        </div>
+
+
+
+
+
+    {% endfor %}
+    <br>
+
+    <input type="hidden" id="formset-prefix" value="{{ formset.prefix }}" />
+
+    <input type="submit" class="btn btn-lg btn-danger btn-block" value="Save items"/>
+
+  </form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

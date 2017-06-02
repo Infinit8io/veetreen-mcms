@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}{{ event.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+
+
+
+  <div class="row">
+    <div class="col mt-3">
+      <h2 class="event-name">{{ event.name }}</h2>
+      <div class="d-flex justify-content-between">
+        <p class="text-muted"><i class="em em-date"></i>&nbsp;{{ event.date_time }}</p>
+        <p class="text-muted">by {{ event.admin.username }}</p>
+      </div>
+
+      <p class="text-muted"><i class="em em-round_pushpin"></i>&nbsp;{{ event.address }}</p>
+        <p class="text-muted"><i class="em em-link"></i>
+<span id="event-url">{{ request.META.HTTP_HOST }}{% url 'show-event' event.slug %}</span><span class="badge badge-danger copy" data-clipboard-target="#event-url">Copy</span></p>
+
+
+      <a class="btn btn-sm btn-outline-primary btn-block" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Show event description
+      </a>
+
+      <div class="collapse mt-2" id="collapseExample">
+        <div class="card card-block">
+          {{ event.description }}
+        </div>
+      </div>
+
+      <hr/>
+
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col">
+      <p><strong>What to bring</strong></p>
+      {% if not is_participant and not is_admin%}
+      <div class="alert alert-info fade show" role="alert">
+        You cannot yet bring something, you must <strong><a href="{% url "go-to" slug=event.slug %}">join</a></strong> this event before!
+      </div>
+      {% endif %}
+
+      {% if messages %}
+          {% for message in messages %}
+              {% if message.extra_tags == 'go_to' %}
+              <div class="alert alert-success fade show" role="alert">
+                    {{ message }}
+              </div>
+              {% endif %}
+          {% endfor %}
+        {% endif %}
+
+
+      {% if items %}
+        {% for item in items %}
+
+            <div class="card" data-toggle="collapse" data-target="#collapse-{{ item.id }}">
+              <div class="card-block">
+                <span><i class="em {{ item.category.emoji_code }}"></i> <strong>{{ item.name }}</strong></span> <span style="float: right;" class="qty-unity"> {{ item.qty_taken }} / {{ item.qty }} <span class="text-muted"><small>{{ item.unit }}</small> <button type="button" data-toggle="collapse" data-target="#collapse-{{ item.id }}" class="btn btn-outline-primary btn-sm">{% if item.qty_taken == 0 %}Contribute !{% else %} {{ item.contributions.count }} Contributions {% endif %}</button></span></span>
+              </div>
+            </div>
+
+            <div class="collapse contributions-details" id="collapse-{{ item.id }}">
+                <br>
+              <!--<div class="card card-block">-->
+                     {% for contribution in item.contributions.all %}
+                        {% if contribution.user != user %}
+                            <p><small>{{ contribution.user.username }} brings <span class="badge badge-info">{{ contribution.qty }} {{ item.unit }}</span></small></p>
+                        {% endif %}
+                         {% empty %}
+                            <p><small>No contributions yet, be the </small><span class="badge badge-info">FIRST !</span></p>
+                     {% endfor %}
+
+                {% if is_participant %}
+
+                    <div class="row bring-controls-parent">
+                        <div class="col">
+                            <h4><span class="badge badge-danger bring-slider-value">I bring {{ item.user_contrib.qty|default_if_none:"0" }}</span></h4>
+                        </div>
+
+                        <div class="col">
+                            <form action="{% url "bring-item" slug=event.slug item_id=item.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="range" name="qty" class="form-control bring-slider" min="0" step="0.5" value="{{ item.user_contrib.qty|default_if_none:"0" }}" max="{{ item.qty }}" onchange="this.form.submit()" />
+                            </form>
+                        </div>
+
+                    </div>
+
+                {% else %}
+                    <a href="{% url "go-to" slug=event.slug %}">Join this event to contribute !</a>
+                {% endif %}
+              <!--</div>-->
+            </div>
+
+            <br>
+        {% endfor %}
+      {% else %}
+      That's so sad, there's nothing to bring yet :(
+          <br>
+      {% endif %}
+
+      {% if is_admin %}
+        <a href="{% url "item-add" slug=event.slug %}" class="btn btn-outline-success btn-block">Add items to this event</a>
+      {% endif %}
+
+    </div>
+  </div>
+
+{% if is_participant %}
+<div class="row">
+    <div class="col">
+      <p class="mt-4"><strong>What I have to bring</strong></p>
+
+        {% for item in items %}
+            {% for contribution in item.contributions.all %}
+                {% if contribution.user == user %}
+                    <div class="card card-outline-secondary">
+                      <div class="card-block">
+                        <span><i class="em em-hamburger"></i> <strong>{{ item.name }}</strong></span> <span style="float: right;" class="qty-unity"> {{  item.user_contrib.qty }} <span class="text-muted"><small>{{ item.unit }}</small></span></span>
+                      </div>
+                    </div>
+
+                    <br>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+  <div class="row">
+    <div class="col">
+      <p class="mt-4"><strong>People</strong></p>
+
+      <ul class="list-group mb-2">
+        {% for participant in participants %}
+        <li class="list-group-item justify-content-between"><span class="item-name"><strong>{{ participant.username }}</strong></span></li>
+            {% empty %}
+            Nobody has joined the event, copy the link and share it !
+            <button class="btn btn-danger btn-block copy" data-clipboard-target="#event-url">Copy the link to clipboard</button>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

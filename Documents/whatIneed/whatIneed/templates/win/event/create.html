@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% load add_css %}
+
+{% block content %}
+
+<div class="container">
+  <h2 class="form-title mt-2"><span class="badge badge-danger">NEW</span>&nbsp;Event</h2>
+  <form method="post">
+      {{ form.non_field_errors }}
+    {% csrf_token %}
+    <div class="form-group">
+      <label>What's the name of your event?</label>
+      {{ form.name|addclass:"form-control form-control-lg" }}
+      {{ form.name.errors }}
+    </div>
+    <div class="form-group">
+      <label for="example-datetime-local-input">When does it take place?</label>
+      {{ form.date_time|addclass:"form-control form-control-lg" }}
+      {{ form.date_time.errors }}
+    </div>
+      <div class="form-group">
+      <label for="example-datetime-local-input">Where will it be ?</label>
+      {{ form.address|addclass:"form-control form-control-lg places-autocomplete"}}
+      {{ form.address.errors }}
+    </div>
+    <div class="form-group">
+      <label for="exampleTextarea">What is it about?</label>
+      {{ form.description|addclass:"form-control" }}
+      {{ form.description.errors }}
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-block btn-lg btn-danger">Create my event</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

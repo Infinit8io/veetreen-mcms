@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container-fluid fullheight-bg" style="background-image: url('{% static "picnic.jpg" %}');">
+  <div class="bg-filter fullheight d-flex flex-column justify-content-center">
+    <div class="container ">
+      <div class="home-content-lead">
+        <h1>Tell your friends what to bring</h1>
+        <p class="lead">The best way to prepare your next barbecue this summer !</p>
+      </div>
+
+      <div class="home-actions">
+          {% if not user.user.is_authenticated %}
+            <a href="{% url 'facebook_login_by_token' %}" class="btn btn-danger m-1">Join with Facebook</a>
+            <a href="{% url 'account_signup' %}" class="btn btn-outline-secondary m-1">Classic account</a>
+          {% else %}
+            <a href="{% url 'create-event' %}" class="btn btn-danger m-1">Start a new event !</a>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary m-1">See your dashboard</a>
+          {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
